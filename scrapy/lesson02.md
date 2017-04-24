@@ -92,7 +92,7 @@ class MovienewsSpider(scrapy.Spider):
 
 到这里，我们就可以运行爬虫看结果了，还是命令`scrapy crawl movieNews`，从结果中，就会看到相应的输出：
 
-```json
+```
 {'date': '2017-04-24', 'title': '再现真实历史 史诗电影《血战湘江》河北巡回展...', 'url': 'http://www.1905.com/news/20170424/1177156.shtml'}
 {'date': '2017-04-24', 'title': '万达原力北影节联手 打造国产3D动画《妈妈咪鸭...', 'url': 'http://www.1905.com/news/20170424/1177145.shtml'}
 {'date': '2017-04-24', 'title': '品质良莠不齐超半数难回本 网络电影路在何方？', 'url': 'http://www.1905.com/news/20170424/1177124.shtml'}

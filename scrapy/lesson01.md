@@ -147,7 +147,7 @@ scrapy crawl movieNews
 
 该命令输出的信息比较多，涉及程序print出来的数据如下：
 
-```json
+```
 [
     {'title': '再现真实历史 史诗电影《血战湘江》河北巡回展...', 'url': 'http://www.1905.com/news/20170424/1177156.shtml', 'date': '2017-04-24'}, 
     {'title': '万达原力北影节联手 打造国产3D动画《妈妈咪鸭...', 'url': 'http://www.1905.com/news/20170424/1177145.shtml', 'date': '2017-04-24'}, 
