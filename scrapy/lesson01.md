@@ -5,6 +5,13 @@
 - 抓取的URL：http://www.1905.com/list-p-catid-220.html
 - 抓取的内容：新闻标题，日期，详情等
 
+## 安装scrapy
+安装过程很简单，python环境安装好之后，只需要一个命令即可：
+
+```sh
+pip install scrapy
+```
+
 ## 实现过程
 
 - 1. 创建项目
@@ -77,7 +84,7 @@ class MovienewsSpider(scrapy.Spider):
 
 要实现页面内容抽取，首先我们得了解页面的结构，我们看到的是这样的：
 
-
+![页面截图](/scrapy/_images/lesson01-page.png)
 
 查看源码，其html代码结构如（注意：下面代码省略了一下我们所不需要的代码）：
 
