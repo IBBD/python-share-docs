@@ -62,9 +62,7 @@ crapy genspider movieNews www.1905.com
 这时在`lesson01/spiders/`目录下会增加一个文件`movieNews.py`的文件，就是爬虫的基础框架。代码如下：
 
 ```python
-# -*- coding: utf-8 -*-
 import scrapy
-
 
 class MovienewsSpider(scrapy.Spider):
     name = "movieNews"
@@ -106,8 +104,51 @@ class MovienewsSpider(scrapy.Spider):
 
 很显然，这是使用ul/li进行组织的页面，这样基于第2步已有的基础代码，我们实现如下：
 
+```python
+import scrapy
+
+class MovienewsSpider(scrapy.Spider):
+    name = "movieNews"
+    allowed_domains = ["www.1905.com"]
+    start_urls = ['http://www.1905.com/list-p-catid-220.html']
+
+    def parse(self, response):
+        # 特别注意li的class名字后面有一个空格，这是一个坑
+        li_list = response.xpath("//ul[@class='pic-event-over']/li[@class='pic-pack-out ']/div[@class='pic-pack-inner']")
+
+        data = []
+        for li in li_list:
+            # 循环获取title，url，date等信息
+            title = li.xpath("./h3/a/text()").extract()
+            url = li.xpath("./h3/a/@href").extract()
+            date = li.xpath(".//span[@class='timer fl']/text()").extract()
+            # 注意：extract方法的返回值是一个列表，取第一个元素即可
+            data.append({
+                'title': title[0],
+                'url': url[0],
+                'date': date[0]
+            })
+
+        print(data)
 ```
 
+至此，我们的爬虫算是有模有样了，运行起来看看效果：
+
+```sh
+scrapy crawl movieNews
+```
+
+该命令输出的信息比较多，涉及程序print出来的数据如下：
+
+```json
+[
+    {'title': '再现真实历史 史诗电影《血战湘江》河北巡回展...', 'url': 'http://www.1905.com/news/20170424/1177156.shtml', 'date': '2017-04-24'}, 
+    {'title': '万达原力北影节联手 打造国产3D动画《妈妈咪鸭...', 'url': 'http://www.1905.com/news/20170424/1177145.shtml', 'date': '2017-04-24'}, 
+    {'title': '品质良莠不齐超半数难回本 网络电影路在何方？', 'url': 'http://www.1905.com/news/20170424/1177124.shtml', 'date': '2017-04-24'}, 
+    {'title': '《记忆大师》黄渤穿越未来玩直播 许玮甯拍戏溺...', 'url': 'http://www.1905.com/news/20170424/1177129.shtml', 'date': '2017-04-24'}, 
+    {'title': '"麻烦小铺"开张 黄磊携《麻烦家族》现身"叫卖"', 'url': 'http://www.1905.com/news/20170424/1177122.shtml', 'date': '2017-04-24'}, 
+    {'title': '中国年轻人遇见好莱坞前沿工艺 成龙A计划收官', 'url': 'http://www.1905.com/news/20170424/1177057.shtml', 'date': '2017-04-24'}
+]
 ```
 
 
