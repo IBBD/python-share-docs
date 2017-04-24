@@ -41,7 +41,7 @@ You can start your first spider with:
 lesson01/
     scrapy.cfg            # deploy configuration file
 
-    tutorial/             # project's Python module, you'll import your code from here
+    lesson01/             # project's Python module, you'll import your code from here
         __init__.py
 
         items.py          # project items definition file
