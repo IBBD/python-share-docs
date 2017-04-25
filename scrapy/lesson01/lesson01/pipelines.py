@@ -24,3 +24,6 @@ class Lesson01Pipeline(object):
         self.csvfile.flush()  # 注意：需要flush才会写到文件
         
         return item
+
+    def __del__(self):
+        self.csvfile.close()
