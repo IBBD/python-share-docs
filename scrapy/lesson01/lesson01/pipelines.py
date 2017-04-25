@@ -7,19 +7,20 @@
 
 import csv
 
-fieldnames = ["title", "url", "date", "desc"]
-csvfile = open('data/scrapy.csv', 'w', encoding="utf-8")
-writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-writer.writeheader()
-
 
 class Lesson01Pipeline(object):
+    def __init__(self):
+        fieldnames = ["title", "url", "date", "desc"]
+        self.csvfile = open('data.csv', 'wb')
+        self.writer = csv.DictWriter(self.csvfile, fieldnames=fieldnames)
+        self.writer.writeheader()
+
     def process_item(self, item, spider):
         # 处理数据通常是存储到数据库，如mysql，mongodb, csv等
         # 这里实现存储到csv格式的功能
-        global writer, csvfile
-        writer.writerow(item)
-        csvfile.flush()  # 注意：需要flush才会写到文件
-
-        # 返回可以提供给其他的pipeline继续使用
+        item['title'] = item['title'].encode("utf-8")
+        item['desc'] = item['desc'].encode("utf-8")
+        self.writer.writerow(item)
+        self.csvfile.flush()  # 注意：需要flush才会写到文件
+        
         return item
