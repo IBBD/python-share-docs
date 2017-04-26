@@ -27,7 +27,7 @@ class MovienewsSpider(scrapy.Spider):
 
             # meta参数可以将已经获取的item数据传给详情解释函数
             # callback参数指定详情页面的解释函数
-            yield scrapy.request(url[0],
+            yield scrapy.Request(url[0],
                                  meta={'item': item},
                                  callback=self.parse_desc)
 
