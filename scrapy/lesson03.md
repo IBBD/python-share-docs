@@ -61,4 +61,34 @@
 
 如此即可。
 
+## 数据存储到csv
+前面已经实现了简单的pipeline，但是之前只是简单的print，但是这样实际上是很难应用的。这里实现将数据保存的csv文件，同理保存到mysql等数据库也是类似。具体代码如下：
+
+```python
+import csv
+
+class Lesson01Pipeline(object):
+    def __init__(self):
+        fieldnames = ["title", "url", "date", "desc"]
+        self.csvfile = open('data.csv', 'wb')
+        self.writer = csv.DictWriter(self.csvfile, fieldnames=fieldnames)
+        self.writer.writeheader()
+
+    def process_item(self, item, spider):
+        # 处理数据通常是存储到数据库，如mysql，mongodb, csv等
+        # 这里实现存储到csv格式的功能
+        item['title'] = item['title'].encode("utf-8")
+        item['desc'] = item['desc'].encode("utf-8")
+        self.writer.writerow(item)
+        self.csvfile.flush()  # 注意：需要flush才会写到文件
+        
+        return item
+
+    def __del__(self):
+        self.csvfile.close()
+```
+
+这里最大的坑是编码的问题，特别是python2中。
+
+注：实际应用的时候，文件名应该是根据配置而来，而不是硬编码在pipeline里。
 
