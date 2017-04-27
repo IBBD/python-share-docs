@@ -32,7 +32,7 @@ class Lesson01Item(scrapy.Item):
 ```python
 import scrapy
 
-class Lesson01Item(scrapy.Item):
+class Article(scrapy.Item):
     title = scrapy.Field()  # 新闻标题
     url = scrapy.Field()    # 新闻链接
     date = scrapy.Field()   # 新闻发布日期
@@ -61,6 +61,7 @@ class Lesson01Pipeline(object):
 
 ```python
 import scrapy
+from lesson01.items import Article
 
 class MovienewsSpider(scrapy.Spider):
     name = "movieNews"
@@ -79,16 +80,25 @@ class MovienewsSpider(scrapy.Spider):
 
             # 注意：extract方法的返回值是一个列表，取第一个元素即可
             # yield是python中的生成器
-            yield {
-                'title': title[0],
-                'url': url[0],
-                'date': date[0]
-            }
+            item = Article(title=title[0], url=url[0], date=date[0])
+            yield item
 ```
 
 关于生成器 yield，简单地讲，yield 的作用就是把一个函数变成一个 generator，带有 yield 的函数不再是一个普通函数，Python 解释器会将其视为一个 generator。
 
 注意：yield返回的对象，里面的title, url, date等元素都是已经定义好了在items.py文件中的。
+
+- 4. 修改配置文件settings.py
+
+到目前为止，如果我们直接运行爬虫的话，就会发现，我们定义的pipeline好像完全没有效果，这是因为在settings.py中，默认并没有开启pipeline。默认配置如下：
+
+```python
+#ITEM_PIPELINES = {
+#    'lesson01.pipelines.Lesson01Pipeline': 300,
+#}
+```
+
+将前面的＃号去掉即可，其中Lesson01Pipeline就是pipeline中的类名。
 
 到这里，我们就可以运行爬虫看结果了，还是命令`scrapy crawl movieNews`，从结果中，就会看到相应的输出：
 
@@ -98,6 +108,8 @@ class MovienewsSpider(scrapy.Spider):
 {'date': '2017-04-24', 'title': '品质良莠不齐超半数难回本 网络电影路在何方？', 'url': 'http://www.1905.com/news/20170424/1177124.shtml'}
 ...
 ```
+
+注意：在返回item时，应该使用items.py中定义好的字段。
 
 ## 实现子页面的抓取
 新闻类页面的特点是：新闻详情的页面通常不在新闻的列表页面上，如果需要抓取到详情内容，必须实现子页面的抓取。
@@ -123,11 +135,7 @@ class MovienewsSpider(scrapy.Spider):
 
             # 注意：extract方法的返回值是一个列表，取第一个元素即可
             # yield是python中的生成器
-            item = {
-                'title': title[0],
-                'url': url[0],
-                'date': date[0]
-            }
+            item = Article(title=title[0], url=url[0], date=date[0])
 
             # meta参数可以将已经获取的item数据传给详情解释函数
             # callback参数指定详情页面的解释函数
