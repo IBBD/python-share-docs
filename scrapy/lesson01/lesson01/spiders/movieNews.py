@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from lesson01.items import Article
+# from scrapy.exceptions import CloseSpider
 
 
 class MovienewsSpider(scrapy.Spider):
@@ -10,6 +11,8 @@ class MovienewsSpider(scrapy.Spider):
 
     def parse(self, response):
         """抽取新闻列表信息"""
+        print("*"*30, "parse")
+
         # 特别注意li的class名字后面有一个空格，这是一个坑
         li_list = response.xpath("//ul[@class='pic-event-over']/li[@class='pic-pack-out ']/div[@class='pic-pack-inner']")
 
@@ -38,9 +41,13 @@ class MovienewsSpider(scrapy.Spider):
 
     def parse_desc(self, response):
         """抽取详情"""
+        print("*"*30, "parse_desc")
+
         # 在抽取详情信息的时候，将meta传了过来
         item = response.meta['item']
         desc = response.xpath("//div[@class='pic-content']/p//text()").extract()
         desc = "\n".join(desc)
         item['desc'] = desc  # 加入新闻详情
+        # raise CloseSpider("==")
+
         yield item
