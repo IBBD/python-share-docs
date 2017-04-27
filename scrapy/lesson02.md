@@ -88,6 +88,18 @@ class MovienewsSpider(scrapy.Spider):
 
 注意：yield返回的对象，里面的title, url, date等元素都是已经定义好了在items.py文件中的。
 
+- 4. 修改配置文件settings.py
+
+到目前为止，如果我们直接运行爬虫的话，就会发现，我们定义的pipeline好像完全没有效果，这是因为在settings.py中，默认并没有开启pipeline。默认配置如下：
+
+```python
+#ITEM_PIPELINES = {
+#    'lesson01.pipelines.Lesson01Pipeline': 300,
+#}
+```
+
+将前面的＃号去掉即可，其中Lesson01Pipeline就是pipeline中的类名。
+
 到这里，我们就可以运行爬虫看结果了，还是命令`scrapy crawl movieNews`，从结果中，就会看到相应的输出：
 
 ```
