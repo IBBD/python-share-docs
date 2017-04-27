@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
+from lesson01.items import Article
 
 
 class MovienewsSpider(scrapy.Spider):
@@ -20,11 +21,7 @@ class MovienewsSpider(scrapy.Spider):
 
             # 注意：extract方法的返回值是一个列表，取第一个元素即可
             # yield是python中的生成器
-            item = {
-                'title': title[0],
-                'url': url[0],
-                'date': date[0]
-            }
+            item = Article(title=title[0], url=url[0], date=date[0])
 
             # meta参数可以将已经获取的item数据传给详情解释函数
             # callback参数指定详情页面的解释函数
