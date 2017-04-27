@@ -8,7 +8,7 @@
 import scrapy
 
 
-class Lesson01Item(scrapy.Item):
+class Article(scrapy.Item):
     # define the fields for your item here like:
     title = scrapy.Field()  # 新闻标题
     url = scrapy.Field()    # 新闻链接
