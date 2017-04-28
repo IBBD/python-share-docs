@@ -11,7 +11,7 @@ class MovienewsSpider(scrapy.Spider):
     def parse(self, response):
         """抽取新闻列表信息"""
         # 特别注意li的class名字后面有一个空格，这是一个坑
-        li_list = response.xpath("//ul[@class='pic-event-over']/li[@class='pic-pack-out ']/div[@class='pic-pack-inner']")
+        li_list = response.xpath("//ul[@class='pic-event-over']/li[contains(@class, 'pic-pack-out')]/div[@class='pic-pack-inner']")
 
         for li in li_list:
             # 循环获取title，url，date等信息
