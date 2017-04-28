@@ -9,9 +9,10 @@ class MovienewsSpider(scrapy.Spider):
 
     def parse(self, response):
         # 特别注意li的class名字后面有一个空格，这是一个坑
-        li_list = response.xpath("//ul[@class='pic-event-over']/li[@class='pic-pack-out ']/div[@class='pic-pack-inner']")
+        li_list = response.xpath("//ul[@class='pic-event-over']/li[contains(@class, 'pic-pack-out')]/div[@class='pic-pack-inner']")
 
         data = []
+        count = 0
         for li in li_list:
             # 循环获取title，url，date等信息
             title = li.xpath("./h3/a/text()").extract()
@@ -23,5 +24,8 @@ class MovienewsSpider(scrapy.Spider):
                 'url': url[0],
                 'date': date[0]
             })
+
+            count += 1
+            print("*"*10, count, "*"*10)
 
         print(data)
