@@ -1,13 +1,23 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from lesson01.items import Article
-# from scrapy.exceptions import CloseSpider
+from scrapy.exceptions import CloseSpider
 
 
 class MovienewsSpider(scrapy.Spider):
     name = "movieNews"
     allowed_domains = ["www.1905.com"]
-    start_urls = ['http://www.1905.com/list-p-catid-220.html']
+    start_urls = ['http://www.1905.com/list-p-catid-%s.html']
+
+    def start_requests(self):
+        # catid = 220
+        catid = getattr(self, 'catid', None)
+        if catid is None:
+            raise CloseSpider("catid param is not set")
+
+        for url in self.start_urls:
+            url = url % catid
+            yield scrapy.Request(url, self.parse)
 
     def parse(self, response):
         """抽取新闻列表信息"""

@@ -14,6 +14,8 @@
 - 中间件实现
 - 爬虫参数配置
 
+有了配置文件和user agent中间件的实现，基本就能应付大多数网站的反爬虫机制了。
+
 ## 配置文件解释
 配置文件主要是指`settings.py`，在前面的课程中也略有涉及，主要是pipeline的配置。一些比较重要的配置：
 
@@ -144,6 +146,39 @@ DOWNLOADER_MIDDLEWARES = {
 ```
 
 ## 爬虫参数配置
+有时候，我们运行爬虫的时候，需要动态得设置一些参数。参数我们也可以设置在`settings.py`的配置文件中，但是那样子每次运行的时候，都需要修改代码才能执行。这时通过动态参数运行时设置参数最好。
 
-## 
+文档见：https://docs.scrapy.org/en/latest/intro/tutorial.html#using-spider-arguments
+
+例如，原来我们需要抓取的列表入口地址为`http://www.1905.com/list-p-catid-220.html`，这是指定的，其中`catid`的值为220，这是其中一个分类id，但是在很多情况下，看你是有很多分类的，这时就需要通过参数来配置抓取不同的类别了。爬虫代码实现如下：
+
+```python
+from scrapy.exceptions import CloseSpider
+
+class MovienewsSpider(scrapy.Spider):
+    name = "movieNews"
+    allowed_domains = ["www.1905.com"]
+    start_urls = ['http://www.1905.com/list-p-catid-%s.html']
+
+    def start_requests(self):
+        # catid = 220
+        catid = getattr(self, 'catid', None)
+        if catid is None:
+            raise CloseSpider("catid param is not set")
+
+        for url in self.start_urls:
+            url = url % catid
+            yield scrapy.Request(url, self.parse)
+
+    def parse(self, response):
+        # more...（后面的省略）
+```
+
+这时，运行爬虫的时候就可以使用下面的命令：
+
+`scrapy crawl movieNews -a catid=220`
+
+其中`-a`就是增加参数，`catid`就是参数名，`220`就是参数值。可以使用多个参数，例如这样：`scrapy crawl spiderName -a paramName1=value1 -a paramName2=value2 -a paramName3=value3`
+
+这是参数的一种使用场景，参数还可以用于其他的场景，例如`-a debug=True`就可以通过debug参数来判断是否是测试状态了。
 
