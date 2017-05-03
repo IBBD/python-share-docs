@@ -60,7 +60,6 @@ class MovienewsSpider(scrapy.Spider):
         print("*"*30, "parse_desc")
 
         # 在抽取详情信息的时候，将meta传了过来
-        print(response.meta)
         item = response.meta['item']
         desc = response.xpath("//div[@class='pic-content']/p//text()").extract()
         desc = "\n".join(desc)

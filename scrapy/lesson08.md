@@ -1,6 +1,11 @@
 # Lesson08: scrapy爬虫程序的调试
 爬虫在执行的过程中可能会出现各种问题，怎么调试往往是非常重要的。下面会介绍几种调试的方式：
 
+1. shell
+2. 在浏览器中打开，查看response
+3. Parse命令
+4. 日志
+
 ## Scrapy Shell
 爬虫最常见的问题是，抓取不到数据，这时很可能就是selector（例如xpath）写得不对。而scrapy shell就是调试这种问题的利器。
 
@@ -36,7 +41,7 @@ class MovienewsSpider(scrapy.Spider):
         # do more ...
 ```
 
-当程序执行到对应的地方的时候，就会自动进入shell环境。使用这种方式时，当从shell中退出的时候，会自动返回爬虫继续执行。
+当程序执行到对应的地方的时候，就会自动进入shell环境。使用这种方式时，当从shell中退出的时候，会自动返回爬虫继续执行。这个方式就类似断点的作用，可以设置多个断点。
 
 在shell环境内，可以很简单的进行各种xpath的实验，还可以通过`view(response)`在浏览器打开下载的页面（可以辅助xpath的提取）。
 
@@ -53,6 +58,8 @@ def parse_details(self, response):
 
 代码实现上和进入shell中类似，这里不再详述。
 
+可以根据这里的显示，提取xpath，查看download的页面是否正常等。
+
 ## Parse命令
 到目前为止，我们常用的命令是`crawl`和`shell`，这两个命令，一个是启动爬虫，一个是启动shell。
 
@@ -65,4 +72,7 @@ scrapy parse --spider=movieNews -c parse_desc -a catid=220 -d 2 -v 'http://www.1
 执行`scrapy parse`即可查看到上面参数的解释。爬虫会直接下载对应url，并调用相应的解释函数进行处理（-c指定的参数，这里是parse_desc），方便调试。
 
 注：不过这里也有一个局限，就是无法指定meta值，所以在parse函数中也需要接受来自父页面的meta值，就不太适合使用该方法了。
+
+## 日志
+日志也是调试程序的利器，具体在日志部分有详述，这里不罗嗦。
 
