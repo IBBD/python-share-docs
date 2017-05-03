@@ -14,7 +14,7 @@ scrapy shell 'https://docs.scrapy.org/en/latest/topics/debug.html'
 
 这时就会进入一下控制台，可以理解为到了爬虫的parse部分，正常情况下网页数据已经下载回来了，response对象已经生成，在控制台中都可以直接使用。
 
-- 第一种方式：在爬虫中进入shell：
+- 第二种方式：在爬虫中进入shell：
 
 第一种方式虽然简单，但是有麻烦的地方，例如shell的执行环境和爬虫的执行环境可能不一致，因为爬虫可能使用了user-agent等，这时使用第一种方式就不是那么合适。另外，如果是希望爬虫在满足某些条件的情况下才调用shell，这时第一种方式也是实现不了的。
 
@@ -36,6 +36,33 @@ class MovienewsSpider(scrapy.Spider):
         # do more ...
 ```
 
+当程序执行到对应的地方的时候，就会自动进入shell环境。使用这种方式时，当从shell中退出的时候，会自动返回爬虫继续执行。
 
+在shell环境内，可以很简单的进行各种xpath的实验，还可以通过`view(response)`在浏览器打开下载的页面（可以辅助xpath的提取）。
 
+## 在浏览器中打开
+前面已经说了在shell中，怎么在浏览器中打开页面，即使用`view(response)`。其实在命令行下也可以直接用浏览器打开：
+
+```python
+from scrapy.utils.response import open_in_browser
+
+def parse_details(self, response):
+    if "item name" not in response.body:
+        open_in_browser(response)
+```
+
+代码实现上和进入shell中类似，这里不再详述。
+
+## Parse命令
+到目前为止，我们常用的命令是`crawl`和`shell`，这两个命令，一个是启动爬虫，一个是启动shell。
+
+不过有时在测试或者调试的时候，并不一定期望进入shell去调试。例如，爬虫分页抓取新闻的列表页面，然后又根据url抓取新闻的详情页面，但是在抓取某个详情页面的时候，却出现了抓取不到数据的异常（或者抓取不全的异常）。
+
+```sh
+scrapy parse --spider=movieNews -c parse_desc -a catid=220 -d 2 -v 'http://www.1905.com/news/20170502/1178888.shtml'
+```
+
+执行`scrapy parse`即可查看到上面参数的解释。爬虫会直接下载对应url，并调用相应的解释函数进行处理（-c指定的参数，这里是parse_desc），方便调试。
+
+注：不过这里也有一个局限，就是无法指定meta值，所以在parse函数中也需要接受来自父页面的meta值，就不太适合使用该方法了。
 

@@ -26,10 +26,11 @@ class MovienewsSpider(scrapy.Spider):
         # 特别注意li的class名字后面有一个空格，这是一个坑
         li_list = response.xpath("//ul[@class='pic-event-over']/li[contains(@class, 'pic-pack-out')]/div[@class='pic-pack-inner']")
 
-        # 进入debug命令行
+        # 进入debug命令行。如果需要运行修改if的条件即可
         # 这里可以加if判断，例如：if len(li_list) == 0
         # 这时才调用shell进行测试调试
-        inspect_response(response, self)
+        if False:
+            inspect_response(response, self)
 
         for li in li_list:
             # 循环获取title，url，date等信息
@@ -59,6 +60,7 @@ class MovienewsSpider(scrapy.Spider):
         print("*"*30, "parse_desc")
 
         # 在抽取详情信息的时候，将meta传了过来
+        print(response.meta)
         item = response.meta['item']
         desc = response.xpath("//div[@class='pic-content']/p//text()").extract()
         desc = "\n".join(desc)
