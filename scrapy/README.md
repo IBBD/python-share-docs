@@ -7,6 +7,6 @@
 5. [ ] Lesson05: 分布式爬虫。将项目切换到分支`scrapy-lesson05`即可查看到代码。
 6. [ ] Lesson06: 日志机制。将项目切换到分支`scrapy-lesson06`即可查看到代码。
 7. [ ] Lesson07: 动态网页抓取。
-8. [ ] Lesson08: 爬虫的调试与测试。
+8. [x] Lesson08: 爬虫的调试与测试。
 
 
