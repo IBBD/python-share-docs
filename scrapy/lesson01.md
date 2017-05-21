@@ -73,12 +73,14 @@ import scrapy
 
 class MovienewsSpider(scrapy.Spider):
     name = "movieNews"
-    allowed_domains = ["www.1905.com"]
+    allowed_domains = ["1905.com"]
     start_urls = ['http://www.1905.com/']
 
     def parse(self, response):
         pass
 ```
+
+注意：`allowed_domains`这个配置变量需要配置正确，否则会得不到正确的结果。爬虫执行过程中，域名可能会变化，例如爬取列表页面时，可能是a域名，但是到了详情页，可能就变成了b域名（可能是一个子域名）。所以直接最好直接配置顶级的域名，例如`1905.com`就可以使用在`www.1905.com`, `a.1905.com`等子域名。
 
 - 3. 实现内容抽取
 
@@ -145,7 +147,7 @@ class MovienewsSpider(scrapy.Spider):
 scrapy crawl movieNews
 ```
 
-注：**运行该命令的目录应该是和配置文件scrapy.cfg所在是同一个目录**。
+注意：运行该命令的目录，**一定是和配置文件scrapy.cfg是同一个目录**.
 
 该命令输出的信息比较多，涉及程序print出来的数据如下：
 
