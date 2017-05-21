@@ -145,6 +145,8 @@ class MovienewsSpider(scrapy.Spider):
 scrapy crawl movieNews
 ```
 
+注：**运行该命令的目录应该是和配置文件scrapy.cfg所在是同一个目录**。
+
 该命令输出的信息比较多，涉及程序print出来的数据如下：
 
 ```

@@ -8,5 +8,6 @@
 6. [ ] Lesson06: 日志机制。将项目切换到分支`scrapy-lesson06`即可查看到代码。
 7. [ ] Lesson07: 动态网页抓取。
 8. [x] Lesson08: 爬虫的调试与测试。将项目切换到分支`scrapy-lesson08`即可查看到代码，在lesson01目录下。
+9. [ ] Lesson09: 爬虫开发过程中常见的编码问题
 
 
