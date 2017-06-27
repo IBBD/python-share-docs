@@ -19,6 +19,11 @@ scrapy shell 'https://docs.scrapy.org/en/latest/topics/debug.html'
 
 这时就会进入一下控制台，可以理解为到了爬虫的parse部分，正常情况下网页数据已经下载回来了，response对象已经生成，在控制台中都可以直接使用。
 
+比较重要的对象包括：
+
+1. response：结果对象，做解释时经常需要使用
+2. request：请求对象，例如`request.headers`可以查看请求头的信息，例如设置的代理是否生效，user-agent是否正确等。
+
 - 第二种方式：在爬虫中进入shell：
 
 第一种方式虽然简单，但是有麻烦的地方，例如shell的执行环境和爬虫的执行环境可能不一致，因为爬虫可能使用了user-agent等，这时使用第一种方式就不是那么合适。另外，如果是希望爬虫在满足某些条件的情况下才调用shell，这时第一种方式也是实现不了的。
