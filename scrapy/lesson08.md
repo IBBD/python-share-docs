@@ -24,6 +24,15 @@ scrapy shell 'https://docs.scrapy.org/en/latest/topics/debug.html'
 1. response：结果对象，做解释时经常需要使用
 2. request：请求对象，例如`request.headers`可以查看请求头的信息，例如设置的代理是否生效，user-agent是否正确等。
 
+如果遇到xpath匹配不到内容，或者匹配到的内容不正确，我们可能还需要查看response的源码是否和我们网页上看到的一致（注意：爬虫模拟请求到的页面可能和我们在浏览器上看到的并不一致，因为可能存在终端类型适配的问题，如手机或者pc，人群适配的问题，反爬虫机制的问题等），这时可以在shell中直接存储html文件，代码很简单，如下：
+
+```python
+with open('/tmp/filename.html', 'w') as w:
+    w.write(str(response.body))
+```
+
+文件路径可以选择一个方便的即可。
+
 - 第二种方式：在爬虫中进入shell：
 
 第一种方式虽然简单，但是有麻烦的地方，例如shell的执行环境和爬虫的执行环境可能不一致，因为爬虫可能使用了user-agent等，这时使用第一种方式就不是那么合适。另外，如果是希望爬虫在满足某些条件的情况下才调用shell，这时第一种方式也是实现不了的。
