@@ -15,6 +15,9 @@
 
 ```sh
 scrapy shell 'https://docs.scrapy.org/en/latest/topics/debug.html'
+
+# 指定USER_AGENT
+scrapy shell -s USER_AGENT='custom user agent' 'http://www.example.com'
 ```
 
 这时就会进入一下控制台，可以理解为到了爬虫的parse部分，正常情况下网页数据已经下载回来了，response对象已经生成，在控制台中都可以直接使用。
